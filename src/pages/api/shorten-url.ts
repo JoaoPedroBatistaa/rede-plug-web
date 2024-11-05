@@ -28,15 +28,22 @@ export default async function handler(req: { method: string; body: { originalURL
          try {
             const response = await fetch(apiUrl);
             console.log(`Resposta recebida de is.gd: ${response.status} ${response.statusText}`);
+            const text = await response.text();
 
-            data = await response.json();
-            console.log('Dados da resposta:', data);
+            // Verifica se a resposta é JSON
+            try {
+               data = JSON.parse(text);
+               console.log('Dados da resposta:', data);
 
-            if (response.ok && !data.errorcode) {
-               success = true;
-            } else {
-               console.error('Falha ao encurtar URL:', data);
+               if (response.ok && !data.errorcode) {
+                  success = true;
+               } else {
+                  console.error('Falha ao encurtar URL:', data);
+               }
+            } catch (jsonError) {
+               console.error('Resposta não é JSON:', text);
             }
+
          } catch (error) {
             console.error(`Tentativa ${attempts + 1} falhou:`, error);
          }

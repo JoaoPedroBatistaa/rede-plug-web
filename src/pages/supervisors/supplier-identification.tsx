@@ -370,7 +370,7 @@ export default function NewPost() {
     console.log(`Iniciando encurtamento da URL: ${originalUrl}`);
 
     try {
-      const response = await fetch("/api/shorten-url", {
+      const response = await fetch("/api/shorten-url-old", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
